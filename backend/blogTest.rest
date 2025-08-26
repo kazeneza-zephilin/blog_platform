@@ -1,0 +1,83 @@
+
+# Test server health
+GET http://localhost:5000/
+Accept: application/json
+####
+# Register a new user
+POST http://localhost:5000/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "author1",
+  "email": "author1@example.com",
+  "password": "password123",
+  "role": "AUTHOR"
+}
+####
+# Login user
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "author1@example.com",
+  "password": "password123"
+}
+####
+# Get all posts (public)
+GET http://localhost:5000/api/posts
+Accept: application/json
+####
+# Create a new post (protected, requires JWT)
+POST http://localhost:5000/api/posts
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IkFVVEhPUiIsImlhdCI6MTc1NjE5OTM4MywiZXhwIjoxNzU2MjAyOTgzfQ.Rzya337r2DI0YGeiRadhpJ9AmqRAESzjsUFYPP1NLvI
+Content-Type: application/json
+
+{
+  "title": "My second Post",
+  "content": "This is the content of my first post."
+}
+####
+# Update a post (protected)
+PUT http://localhost:5000/api/posts/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IkFVVEhPUiIsImlhdCI6MTc1NjE5OTM4MywiZXhwIjoxNzU2MjAyOTgzfQ.Rzya337r2DI0YGeiRadhpJ9AmqRAESzjsUFYPP1NLvI
+Content-Type: application/json
+
+{
+  "title": "Updated Post Title"
+}
+####
+# Publish a post (protected)
+PATCH http://localhost:5000/api/posts/1/publish
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IkFVVEhPUiIsImlhdCI6MTc1NjE5OTM4MywiZXhwIjoxNzU2MjAyOTgzfQ.Rzya337r2DI0YGeiRadhpJ9AmqRAESzjsUFYPP1NLvI
+####
+# Delete a post (protected)
+DELETE http://localhost:5000/api/posts/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IkFVVEhPUiIsImlhdCI6MTc1NjE5OTM4MywiZXhwIjoxNzU2MjAyOTgzfQ.Rzya337r2DI0YGeiRadhpJ9AmqRAESzjsUFYPP1NLvI
+####
+# Get all comments for a post
+GET http://localhost:5000/api/comments/posts/1/comments
+####
+# Create a comment (protected)
+POST http://localhost:5000/api/comments/posts/1/comments
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IkFVVEhPUiIsImlhdCI6MTc1NjE5OTM4MywiZXhwIjoxNzU2MjAyOTgzfQ.Rzya337r2DI0YGeiRadhpJ9AmqRAESzjsUFYPP1NLvI
+Content-Type: application/json
+
+{
+  "content": "This is a comment"
+}
+####
+# Update a comment (protected, owner only)
+PUT http://localhost:5000/api/comments/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IkFVVEhPUiIsImlhdCI6MTc1NjE5OTM4MywiZXhwIjoxNzU2MjAyOTgzfQ.Rzya337r2DI0YGeiRadhpJ9AmqRAESzjsUFYPP1NLvI
+Content-Type: application/json
+
+{
+  "content": "Updated comment content"
+}
+####
+# Delete a comment (protected, owner only)
+DELETE http://localhost:5000/api/comments/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IkFVVEhPUiIsImlhdCI6MTc1NjE5OTM4MywiZXhwIjoxNzU2MjAyOTgzfQ.Rzya337r2DI0YGeiRadhpJ9AmqRAESzjsUFYPP1NLvI
+
+### access token for author1:
+# eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IkFVVEhPUiIsImlhdCI6MTc1NjE5OTM4MywiZXhwIjoxNzU2MjAyOTgzfQ.Rzya337r2DI0YGeiRadhpJ9AmqRAESzjsUFYPP1NLvI
